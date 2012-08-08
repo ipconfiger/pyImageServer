@@ -4,8 +4,8 @@ import logging
 
 pybcs.init_logging(logging.INFO)
 
-AK = '7d1213ec30594b8a7026bac1cf3b1270'           #请改为你的AK
-SK = 'EC1e876877ad3097b083872a70a73114'         #请改为你的SK
+AK = ''           #请改为你的AK
+SK = ''         #请改为你的SK
 
 BUCKET='myimage1'
 
