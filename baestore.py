@@ -12,9 +12,11 @@ BUCKET='myimage1'
 bcs = pybcs.BCS('http://bcs.duapp.com/', AK, SK)
 
 def dump_file(filename,file_obj):
+    b = bcs.bucket(BUCKET)
     o = b.object('/%s'%filename)
     o.put(file_obj)
 
 def read_file(filename):
+    b = bcs.bucket(BUCKET)
     o = b.object('/%s'%filename)
     return o.get()
