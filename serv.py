@@ -32,11 +32,15 @@ def upload_file():
     dump_file(new_filename,image_data)
     if not sizes:
         return success_rep(request.form,new_filename)
+    limit=0
     for k,v in json.loads(sizes).iteritems():
         w,h=map(int,v.split("x"))
         thumb=change_size(ext_name,image_data,w,h)
         thumb_filename="%s_%s.%s"%(new_filename_prefix,k,ext_name)
         dump_file(thumb_filename,thumb)
+        if limit>4:
+            break
+        limit+=1
     return success_rep(request.form,new_filename)
 
 

@@ -31,24 +31,18 @@ def load_data_access(holder_name):
 
 def success_rep(form,filename):
     success=form.get("on_success","")
-    status_tag=form.get("status_tag","")
-    filename_tag=form.get("filename_tag","")
     if success:
-        return_dict=json.loads(success)
-        return_dict[status_tag]=True
-        return_dict[filename_tag]=filename
-        return json.dumps(return_dict)
+        success=success.replace("$status","true")
+        success=success.replace("$filename",filename)
+        return success
     return json.dumps(dict(status=True,filename=filename))
 
 def error_rep(form,info):
     error=form.get("on_error","")
-    status_tag=form.get("status_tag","")
-    info_tag=request.form.get("info_tag","")
     if error:
-        return_dict=json.loads(error)
-        return_dict[status_tag]=False
-        return_dict[info_tag]=info
-        return json.dumps(return_dict)
+        error=error.replace("$status","false")
+        error=error.replace("$info",info)
+        return error
     return json.dumps(dict(status=False,info=info))
 
 def dump_file(filename,file_obj):
