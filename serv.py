@@ -6,7 +6,7 @@ import settings
 
 from StringIO import StringIO
 from utils import *
-from flask import Flask,request,send_file
+from flask import Flask, request, send_file, jsonify
 
 
 app = Flask(__name__)
@@ -18,21 +18,21 @@ get_file,dump_file=load_data_access(settings.HOLDER)
 def ping():
     return "it works!"
 
-@app.route("/",methods=["POST"])
+@app.route("/", methods=["POST"])
 def upload_file():
-    sizes=request.form.get("sizes","")
+    sizes=request.form.get("sizes", "")
     file_object=request.files["thefile"]
     file_name=file_object.filename
     ext_name=get_ext_name(file_name)
     if ext_name.lower() not in settings.ALLOWED_EXT:
-        return error_rep(request.form,"extention %s not allowed"%ext_name)
+        return jsonify(**error_rep(request.form, "extention %s not allowed" % ext_name))
     new_filename_prefix=create_filename()
     new_filename="%s.%s"%(new_filename_prefix,ext_name)
     image_data=file_object.read()
     dump_file(new_filename,image_data)
     if not sizes:
-        return success_rep(request.form,new_filename)
-    limit=0
+        return jsonify(**success_rep(request.form,new_filename))
+    limit = 0
     for k,v in json.loads(sizes).iteritems():
         w,h=map(int,v.split("x"))
         thumb=change_size(ext_name,image_data,w,h)
@@ -41,7 +41,9 @@ def upload_file():
         if limit>4:
             break
         limit+=1
-    return success_rep(request.form,new_filename)
+
+    return jsonify(**success_rep(request.form, new_filename))
+
 
 
 

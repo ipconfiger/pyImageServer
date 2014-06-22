@@ -35,7 +35,7 @@ def success_rep(form,filename):
         success=success.replace("$status","true")
         success=success.replace("$filename",filename)
         return success
-    return json.dumps(dict(status=True,filename=filename))
+    return dict(status=True,filename=filename)
 
 def error_rep(form,info):
     error=form.get("on_error","")
@@ -43,7 +43,7 @@ def error_rep(form,info):
         error=error.replace("$status","false")
         error=error.replace("$info",info)
         return error
-    return json.dumps(dict(status=False,info=info))
+    return dict(status=False,info=info)
 
 def dump_file(filename,file_obj):
     file_path="%s/%s"%(settings.UPFILE_ROOT,filename)
